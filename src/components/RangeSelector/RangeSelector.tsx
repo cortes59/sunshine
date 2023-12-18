@@ -12,7 +12,6 @@ interface IRangeSelectorProps {
 export const RangeSelector: FC<IRangeSelectorProps> = ({
   value,
   onChange,
-  defaultValue = [0, 1],
   min,
   max,
 }) => {
@@ -35,14 +34,13 @@ export const RangeSelector: FC<IRangeSelectorProps> = ({
         max={max}
         valueLabelDisplay="auto"
         onChange={(_, val) => onChange(val as number[])}
-        defaultValue={defaultValue}
+        value={value}
       />
       <Stack direction="row" alignItems="center" spacing={2}>
         <Input
           type="number"
           startAdornment={'$'}
           value={value[0]}
-          defaultValue={defaultValue[0]}
           onChange={onInputChange(0)}
         />
         <Typography>to</Typography>
@@ -50,7 +48,6 @@ export const RangeSelector: FC<IRangeSelectorProps> = ({
           type="number"
           startAdornment={'$'}
           value={value[1]}
-          defaultValue={defaultValue[1]}
           onChange={onInputChange(1)}
         />
       </Stack>

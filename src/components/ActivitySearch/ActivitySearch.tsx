@@ -132,15 +132,7 @@ export const ActivitySearch: FC = () => {
               control={control}
               name="activityAmounts"
               render={({ field, formState }) => (
-                <RangeSelector
-                  value={field.value}
-                  onChange={field.onChange}
-                  min={0}
-                  max={500000}
-                  defaultValue={
-                    formState.defaultValues?.activityAmounts as number[]
-                  }
-                />
+                <RangeSelector {...field} min={0} max={500000} />
               )}
             />
           </FormControl>

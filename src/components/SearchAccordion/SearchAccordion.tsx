@@ -17,9 +17,12 @@ export const SearchAccordion: FC<SearchAccordionProps> = ({
   children,
 }) => {
   return (
-    <Accordion sx={{ boxShadow: 'none', border: 'none' }}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography>{title}</Typography>
+    <Accordion sx={{ boxShadow: 'none', border: 'none' }} defaultExpanded>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        sx={{ backgroundColor: '#EFEFEF' }}
+      >
+        <Typography sx={{ fontWeight: 'bold' }}>{title}</Typography>
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>
     </Accordion>
