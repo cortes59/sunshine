@@ -1,20 +1,48 @@
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { FC } from 'react'
-import { FilingItem } from './ActivityItem/FilingItem'
-import { donationsMock, filingMock } from './data'
 import { DonationItem } from './ActivityItem/DonationItem'
+import { SearchResultItem } from '../../types/SearchForm'
+import {
+  Donation,
+  DonationActivity,
+  Filing,
+  FilingActivity,
+  Spending,
+  SpendingActivity,
+} from '../../types/Activity'
+import { SpendingItem } from './ActivityItem/SpendingItem'
+import { FilingItem } from './ActivityItem/FilingItem'
 
-export const SearchActivities: FC = () => {
+interface SearchActivitesProps {
+  results: SearchResultItem[]
+}
+export const SearchActivities: FC<SearchActivitesProps> = ({ results }) => {
   return (
     <Stack spacing={1}>
       <Box>
         <Typography variant="h6">
-          361,377 activity items for this search
+          {results.length} activity items for this search
         </Typography>
         <Divider />
       </Box>
-      <FilingItem item={filingMock[0]} />
-      <DonationItem item={donationsMock[0]} />
+      {results.map((result, index) =>
+        result.type.name === 'Donation' ? (
+          <DonationItem
+            key={`donation-${result.id}`}
+            item={(result as DonationActivity).donation}
+          />
+        ) : result.type.name === 'Spending' ? (
+          <SpendingItem
+            key={`spending-${result.id}`}
+            item={(result as SpendingActivity).spending}
+          />
+        ) : result.type.name === 'Filing' ? (
+          <FilingItem
+            key={`filing-${result.id}`}
+            item={(result as FilingActivity).filing}
+          />
+        ) : null
+      )}
     </Stack>
   )
 }

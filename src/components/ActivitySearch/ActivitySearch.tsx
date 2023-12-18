@@ -20,31 +20,18 @@ import subYears from 'date-fns/subYears'
 import { SubmitHandler, useForm, Controller } from 'react-hook-form'
 import { RangeSelector } from '../RangeSelector/RangeSelector'
 import { TypesSelector } from '../TypesSelector/TypesSelector'
-
-const ACTIVITY_TYPES = [
-  {
-    id: 1,
-    name: 'Donations',
-  },
-  {
-    id: 2,
-    name: 'Spending',
-  },
-  {
-    id: 3,
-    name: 'Filing',
-  },
-]
-
-interface IFormInputs {
+import { ISearchFormInputs } from '../../types/SearchForm'
+import { ACTIVITY_TYPES } from '../SearchResults/data'
+import { useAppDispatch } from '../../app/hooks'
+import { submitSearch } from '../../features/search/searchSlice'
+interface SearchLastOption {
+  label: string
   activityStart: Date
   activityEnd: Date
-  activityTypes: number[]
-  activityAmounts: number[]
 }
 
 export const ActivitySearch: FC = () => {
-  const { handleSubmit, control, reset, register } = useForm<IFormInputs>({
+  const { handleSubmit, control, setValue } = useForm<ISearchFormInputs>({
     defaultValues: {
       activityTypes: ACTIVITY_TYPES.map((type) => type.id),
       activityAmounts: [0, 500000],
@@ -52,7 +39,9 @@ export const ActivitySearch: FC = () => {
       activityEnd: new Date(),
     },
   })
-  const searchLastOptions = useMemo(
+  const dispatch = useAppDispatch()
+
+  const searchLastOptions: SearchLastOption[] = useMemo(
     () => [
       {
         label: '1 Day',
@@ -69,10 +58,22 @@ export const ActivitySearch: FC = () => {
         activityStart: subDays(new Date(), 30),
         activityEnd: new Date(),
       },
+      {
+        label: 'All',
+        activityStart: subYears(new Date(), 2),
+        activityEnd: new Date(),
+      },
     ],
     []
   )
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => console.log(data)
+
+  const onSubmit: SubmitHandler<ISearchFormInputs> = (data) =>
+    dispatch(submitSearch(data))
+
+  const onSearchLastOptionClick = (option: SearchLastOption) => {
+    setValue('activityStart', option.activityStart)
+    setValue('activityEnd', option.activityEnd)
+  }
 
   return (
     <SearchAccordion title="Activity">
@@ -106,6 +107,7 @@ export const ActivitySearch: FC = () => {
                     size="small"
                     variant="text"
                     key={`search-last-${option.label}`}
+                    onClick={() => onSearchLastOptionClick(option)}
                   >
                     {option.label}
                   </Button>
@@ -121,7 +123,11 @@ export const ActivitySearch: FC = () => {
                 control={control}
                 name={'activityTypes'}
                 render={({ field }) => (
-                  <TypesSelector {...field} options={ACTIVITY_TYPES} />
+                  <TypesSelector
+                    value={field.value}
+                    onChange={field.onChange}
+                    options={ACTIVITY_TYPES}
+                  />
                 )}
               />
             </FormGroup>
@@ -131,8 +137,13 @@ export const ActivitySearch: FC = () => {
             <Controller
               control={control}
               name="activityAmounts"
-              render={({ field, formState }) => (
-                <RangeSelector {...field} min={0} max={500000} />
+              render={({ field }) => (
+                <RangeSelector
+                  value={field.value}
+                  onChange={field.onChange}
+                  min={0}
+                  max={500000}
+                />
               )}
             />
           </FormControl>

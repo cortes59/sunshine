@@ -14,6 +14,7 @@ export const Home: React.FC = () => {
             </Typography>
             <Stack>
               <ActivitySearch />
+              {/* Remaining search accordions */}
             </Stack>
           </CardContent>
         </Card>

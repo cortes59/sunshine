@@ -27,6 +27,21 @@ export const spendingActivitySummaryMock: SpendingActivitySummary = {
   vendorsCount: 19365,
 }
 
+export const ACTIVITY_TYPES = [
+  {
+    id: 1,
+    name: 'Donations',
+  },
+  {
+    id: 2,
+    name: 'Spending',
+  },
+  {
+    id: 3,
+    name: 'Filing',
+  },
+]
+
 export const vendorsMock: Vendor[] = [
   {
     id: 1,
@@ -50,8 +65,11 @@ export const officeMock: CandidatePACOffice[] = [
 ]
 export const candidateType: Type = { id: 1, name: 'candidate' }
 export const pacType: Type = { id: 2, name: 'pac' }
-export const donationType: Type = { id: 3, name: 'Cash' }
-export const spendingType: Type = { id: 4, name: 'Cash' }
+export const donationType: Type = { id: 3, name: 'Donation' }
+export const donationTypeCash: Type = { id: 3, name: 'Cash' }
+export const spendingType: Type = { id: 4, name: 'Spending' }
+export const spendingTypeCash: Type = { id: 4, name: 'Cash' }
+export const filingType: Type = { id: 5, name: 'Filing' }
 export const filingTypeLoan: Type = { id: 5, name: 'Loan' }
 export const filingTypeCash: Type = { id: 6, name: 'Cash' }
 export const activityTypeDonation: Type = { id: 6, name: 'Donation' }
@@ -87,7 +105,7 @@ export const donationsMock: Donation[] = [
     id: 1,
     amount: 1000,
     candidate_pac: candidatePACMock[0],
-    type: donationType,
+    type: donationTypeCash,
     date: new Date(),
     donor: donorMock[0],
   },
@@ -95,7 +113,7 @@ export const donationsMock: Donation[] = [
     id: 2,
     amount: 200,
     candidate_pac: candidatePACMock[1],
-    type: donationType,
+    type: donationTypeCash,
     date: new Date(),
     donor: donorMock[1],
   },
@@ -108,7 +126,7 @@ export const spendingMock: Spending[] = [
     candidate_pac: candidatePACMock[0],
     code: '123',
     date: new Date(),
-    type: spendingType,
+    type: spendingTypeCash,
     vendor: vendorsMock[0],
   },
   {
@@ -117,7 +135,7 @@ export const spendingMock: Spending[] = [
     candidate_pac: candidatePACMock[1],
     code: '123',
     date: new Date(),
-    type: spendingType,
+    type: spendingTypeCash,
     vendor: vendorsMock[1],
   },
 ]
@@ -143,7 +161,7 @@ export const filingMock: Filing[] = [
   {
     id: 2,
     type: filingTypeLoan,
-    candidate_pac: candidatePACMock[2],
+    candidate_pac: candidatePACMock[1],
     loan: 1000,
     date: new Date(),
     document_url: 'https://google.com',

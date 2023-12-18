@@ -78,3 +78,13 @@ export interface Filing {
   date: Date
   activities: Activity[]
 }
+
+export interface FilingActivity extends Activity {
+  filing: Filing
+}
+export interface SpendingActivity extends Activity {
+  spending: Spending
+}
+export interface DonationActivity extends Activity {
+  donation: Donation
+}
